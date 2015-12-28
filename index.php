@@ -33,10 +33,7 @@ img {
 <div style="display: flex; flex-wrap: wrap; list-style: outside none none;">
 ';
 
-$channelIDs = [
-    'UCtESv1e7ntJaLJYKIO1FoYw',
-    'UC9CuvdOVfMPvKCiwdGKL3cQ',
-];
+$channelIDs = json_decode(file_get_contents('channels.json'));
 
 foreach ($channelIDs as $channelID) {
     if(file_exists($channelID) === false) {

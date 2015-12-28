@@ -5,7 +5,16 @@ echo '<!doctype html>
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <title>Subscriptions</title>
+<script src="node_modules/jquery/dist/jquery.min.js"></script>
+<script src="node_modules/jquery-colorbox/jquery.colorbox-min.js"></script>
+<link rel="stylesheet" href="node_modules/jquery-colorbox/example3/colorbox.css" type="text/css">
 <style type="text/css">
+
+body, html {
+margin: 0;
+padding: 0;
+}
+
 .video {
     margin: 1.5%;
     flex: 1 1 20%;
@@ -53,7 +62,7 @@ foreach ($channelIDs as $channelID) {
             'title' => $video->title,
             'date' => (string)$video->published,
             'timestamp' => $timestamp,
-            'URL' => 'https://www.youtube.com/watch?v='.$YTID,
+            'URL' => 'https://www.youtube.com/embed/'.$YTID,
             'thumbnail' => (string)$media->thumbnail->attributes()->url,
         ];
     }
@@ -66,14 +75,16 @@ foreach ($videoData as $video) {
     <div class="video">
         <header>'.$video->title.'</header>
         <p>'.date('d/m/Y', $video->timestamp).'</p>
-        <img src="'.$video->thumbnail.'" />
+        <a class="youtube" href="'.$video->URL.'"><img src="'.$video->thumbnail.'" /></a>
     </div>
     ';
 }
 
-echo '
+?>
 </div>
+<script>
+$("a.youtube").colorbox({iframe:true, width:'100%', height:'100%'});
+</script>
 </body>
 </html>
-<html>';
-
+<html>

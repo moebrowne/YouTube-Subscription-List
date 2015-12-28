@@ -33,15 +33,21 @@ img {
 <div style="display: flex; flex-wrap: wrap; list-style: outside none none;">
 ';
 
+$dirCache = './cache';
+
 $channelIDs = json_decode(file_get_contents('channels.json'));
 
+if(is_dir($dirCache) === false) {
+    mkdir($dirCache);
+}
+
 foreach ($channelIDs as $channelID) {
-    if(file_exists($channelID) === false) {
+    if(file_exists($dirCache.'/'.$channelID) === false) {
         $XML = file_get_contents('https://www.youtube.com/feeds/videos.xml?channel_id='.$channelID);
-        file_put_contents($channelID,$XML);
+        file_put_contents($dirCache.'/'.$channelID,$XML);
     }
     else {
-        $XML = file_get_contents($channelID);
+        $XML = file_get_contents($dirCache.'/'.$channelID);
         }
 
     $channel = new SimpleXMLElement($XML);

@@ -7,6 +7,9 @@ class channel
     private $cacheDir = './cache';
     private $defaultExpiry = (60*60*15); // 15 minutes
 
+    private $data;
+    private $expires;
+
     /**
      * Initiate
      * @param string $ID The ID of the channel

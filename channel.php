@@ -108,6 +108,9 @@ class channel
         $this->XML = $XMLBody;
         $this->headers = $XMLHeader;
 
+        // Write to the cache
+        $this->putCache();
+
         return $XMLBody;
     }
 
@@ -126,6 +129,11 @@ class channel
         $this->expires = $data->expires;
 
         return $data->data;
+    }
+
+    private function putCache()
+    {
+        return file_put_contents($this->cachePath, json_encode([ 'ID' => $this->ID, 'expires' => $this->getExpires(), 'data' => $this->XML]));
     }
 
     private function isExpired()

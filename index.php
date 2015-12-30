@@ -42,7 +42,7 @@ if(is_dir($dirCache) === false) {
 }
 
 foreach ($channelIDs as $channelID) {
-    if(file_exists($dirCache.'/'.$channelID) === false) {
+    if(file_exists($dirCache.'/'.$channelID.'.json') === false) {
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'https://www.youtube.com/feeds/videos.xml?channel_id='.$channelID);
@@ -66,13 +66,26 @@ foreach ($channelIDs as $channelID) {
             $expiryTimestamp = strtotime($expiryDate);
         }
 
-        file_put_contents($dirCache.'/'.$channelID, $XMLBody);
+        $XMLJSONArray = [
+            'ID' => $channelID,
+            'expires' => (int)$expiryTimestamp,
+            'data' => $XMLBody,
+        ];
+
+        file_put_contents($dirCache.'/'.$channelID.'.json', json_encode($XMLJSONArray));
     }
     else {
-        $XML = file_get_contents($dirCache.'/'.$channelID);
-        }
+        // Get the XML JSON
+        $XMLJSON = file_get_contents($dirCache.'/'.$channelID);
 
-    $channel = new SimpleXMLElement($XML);
+        $XMLJSONArray = json_decode($XMLJSON);
+
+        if (json_last_error() !== null) {
+            throw new Exception('JSON ERROR: '.json_last_error_msg());
+        }
+    }
+
+    $channel = new SimpleXMLElement($XMLJSONArray['data']);
 
     foreach ($channel->entry as $video) {
 

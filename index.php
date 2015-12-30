@@ -67,7 +67,6 @@ foreach ($channelIDs as $channelID) {
         }
 
         file_put_contents($dirCache.'/'.$channelID, $XMLBody);
-        break;
     }
     else {
         $XML = file_get_contents($dirCache.'/'.$channelID);

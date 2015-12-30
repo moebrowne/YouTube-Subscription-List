@@ -43,8 +43,21 @@ if(is_dir($dirCache) === false) {
 
 foreach ($channelIDs as $channelID) {
     if(file_exists($dirCache.'/'.$channelID) === false) {
-        $XML = file_get_contents('https://www.youtube.com/feeds/videos.xml?channel_id='.$channelID);
-        file_put_contents($dirCache.'/'.$channelID,$XML);
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://www.youtube.com/feeds/videos.xml?channel_id='.$channelID);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_VERBOSE, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+
+        $XMLRaw = curl_exec($ch);
+
+        $XMLHeaderSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+        $XMLHeader = substr($XMLRaw, 0, $XMLHeaderSize);
+        $XMLBody = substr($XMLRaw, $XMLHeaderSize);
+
+        file_put_contents($dirCache.'/'.$channelID, $XMLBody);
+        break;
     }
     else {
         $XML = file_get_contents($dirCache.'/'.$channelID);

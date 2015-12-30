@@ -56,6 +56,16 @@ foreach ($channelIDs as $channelID) {
         $XMLHeader = substr($XMLRaw, 0, $XMLHeaderSize);
         $XMLBody = substr($XMLRaw, $XMLHeaderSize);
 
+        // Get the returned headers from the request
+        preg_match('/^Expires: (?<expires>.+)$/m', $XMLHeader, $matches);
+
+        if ($matches['expires'] !== null) {
+            $expiryDate = $matches['expires'];
+
+            // Convert to a timestamp
+            $expiryTimestamp = strtotime($expiryDate);
+        }
+
         file_put_contents($dirCache.'/'.$channelID, $XMLBody);
         break;
     }

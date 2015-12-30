@@ -28,7 +28,7 @@ class channel
 
     private function isCached()
     {
-
+        return (bool)file_exists($this->cacheDir.'/'.$this->ID.'.json');
     }
 
     private function isExpired()

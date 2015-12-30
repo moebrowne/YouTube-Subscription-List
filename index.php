@@ -1,5 +1,11 @@
 <?php
 
+error_reporting(E_ALL);
+ini_set('display_errors', true);
+
+require 'subscriptions.class.php';
+require 'channel.php';
+
 echo '<!doctype html>
 <html>
 <head>
@@ -33,82 +39,12 @@ img {
 <div style="display: flex; flex-wrap: wrap; list-style: outside none none;">
 ';
 
-$dirCache = './cache';
-
 $channelIDs = json_decode(file_get_contents('channels.json'));
 
-if(is_dir($dirCache) === false) {
-    mkdir($dirCache);
-}
+$subscription = new \YouTubeSubscription\subscriptions($channelIDs);
+$subscription->render();
 
-foreach ($channelIDs as $channelID) {
-    if(file_exists($dirCache.'/'.$channelID.'.json') === false) {
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://www.youtube.com/feeds/videos.xml?channel_id='.$channelID);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_VERBOSE, 1);
-        curl_setopt($ch, CURLOPT_HEADER, 1);
-
-        $XMLRaw = curl_exec($ch);
-
-        $XMLHeaderSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-        $XMLHeader = substr($XMLRaw, 0, $XMLHeaderSize);
-        $XMLBody = substr($XMLRaw, $XMLHeaderSize);
-
-        // Get the returned headers from the request
-        preg_match('/^Expires: (?<expires>.+)$/m', $XMLHeader, $matches);
-
-        if ($matches['expires'] !== null) {
-            $expiryDate = $matches['expires'];
-
-            // Convert to a timestamp
-            $expiryTimestamp = strtotime($expiryDate);
-        }
-
-        $XMLJSONArray = [
-            'ID' => $channelID,
-            'expires' => (int)$expiryTimestamp,
-            'data' => $XMLBody,
-        ];
-
-        file_put_contents($dirCache.'/'.$channelID.'.json', json_encode($XMLJSONArray));
-    }
-    else {
-        // Get the XML JSON
-        $XMLJSON = file_get_contents($dirCache.'/'.$channelID);
-
-        $XMLJSONArray = json_decode($XMLJSON);
-
-        if (json_last_error() !== null) {
-            throw new Exception('JSON ERROR: '.json_last_error_msg());
-        }
-    }
-
-    $channel = new SimpleXMLElement($XMLJSONArray['data']);
-
-    foreach ($channel->entry as $video) {
-
-        //var_dump($video->published);
-
-        $media = $video->children('http://search.yahoo.com/mrss/')->group;
-        $YTID = (string)$video->children('http://www.youtube.com/xml/schemas/2015')->videoId;
-
-        $timestamp = DateTime::createFromFormat('Y-m-d\TH:i:sP', (string)$video->published)->getTimestamp();
-
-        $videoData[(int)$timestamp] = (object)[
-            'title' => $video->title,
-            'date' => (string)$video->published,
-            'timestamp' => $timestamp,
-            'URL' => 'https://www.youtube.com/embed/'.$YTID,
-            'thumbnail' => (string)$media->thumbnail->attributes()->url,
-        ];
-    }
-}
-
-krsort($videoData, SORT_NUMERIC);
-
-foreach ($videoData as $video) {
+foreach ($subscription->videos as $video) {
     echo '
     <div class="video">
         <header>'.$video->title.'</header>

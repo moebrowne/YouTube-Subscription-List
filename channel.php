@@ -5,6 +5,7 @@ class channel
 
     private $ID;
     private $cacheDir = './cache';
+    private $cachePath;
     private $defaultExpiry = (60*60*15); // 15 minutes
 
     private $data;
@@ -17,6 +18,7 @@ class channel
     public function __construct($ID)
     {
         $this->ID = $ID;
+        $this->cachePath = $this->cacheDir.'/'.$this->ID.'.json';
     }
 
     private function getHeaders()
@@ -31,7 +33,7 @@ class channel
 
     private function isCached()
     {
-        return (bool)file_exists($this->cacheDir.'/'.$this->ID.'.json');
+        return (bool)file_exists($this->cachePath);
     }
 
     private function isExpired()

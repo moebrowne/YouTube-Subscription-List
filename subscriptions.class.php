@@ -40,6 +40,7 @@ class subscriptions {
                 $timestamp = DateTime::createFromFormat('Y-m-d\TH:i:sP', (string)$video->published)->getTimestamp();
 
                 $this->videos[(int)$timestamp] = (object)[
+                    'ID' => $YTID,
                     'title' => $video->title,
                     'date' => (string)$video->published,
                     'timestamp' => $timestamp,

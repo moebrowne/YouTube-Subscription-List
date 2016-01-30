@@ -58,6 +58,10 @@ foreach ($subscription->videos as $video) {
 </div>
 <script>
 $("a.youtube").colorbox({iframe:true, width:'100%', height:'100%'});
+
+$("a").on('click','.youtube', function(e) {
+    var watched = localStorage['watched'][$(this).attr('id')] = true;
+});
 </script>
 </body>
 </html>

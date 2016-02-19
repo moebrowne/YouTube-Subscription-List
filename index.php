@@ -49,7 +49,7 @@ foreach ($subscription->videos as $video) {
     <div class="video">
         <header>'.$video->title.'</header>
         <p>'.date('d/m/Y', $video->timestamp).'</p>
-        <a id="video_'.$video['ID'].'" class="youtube" href="'.$video->URL.'"><img src="'.$video->thumbnail.'" /></a>
+        <a id="video_'.$video->ID.'" class="youtube" href="'.$video->URL.'"><img src="'.$video->thumbnail.'" /></a>
     </div>
     ';
 }

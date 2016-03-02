@@ -1,5 +1,7 @@
 <?php
 
+use YouTubeSubscription\subscriptions;
+
 error_reporting(E_ALL);
 ini_set('display_errors', true);
 
@@ -41,7 +43,7 @@ img {
 
 $channelIDs = json_decode(file_get_contents('channels.json'));
 
-$subscription = new \YouTubeSubscription\subscriptions($channelIDs);
+$subscription = new subscriptions($channelIDs);
 $subscription->render();
 
 foreach ($subscription->videos as $video) {

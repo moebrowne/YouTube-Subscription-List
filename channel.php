@@ -90,6 +90,13 @@ class channel
 
         $XMLRaw = curl_exec($ch);
 
+        $chInfo = curl_getinfo($ch);
+
+        if ($chInfo['http_code'] !== 200) {
+            echo "ERROR!";
+            return;
+        }
+
         $XMLHeaderSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
         $XMLHeader = substr($XMLRaw, 0, $XMLHeaderSize);
         $XMLBody = substr($XMLRaw, $XMLHeaderSize);

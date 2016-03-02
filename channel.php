@@ -9,7 +9,7 @@ class channel
     private $defaultExpiry;
 
     private $headers;
-    public $XML;
+    public $data;
     private $expires;
 
     /**
@@ -94,7 +94,7 @@ class channel
         $XMLHeader = substr($XMLRaw, 0, $XMLHeaderSize);
         $XMLBody = substr($XMLRaw, $XMLHeaderSize);
 
-        $this->XML = $XMLBody;
+        $this->data = $XMLBody;
         $this->headers = $XMLHeader;
 
         // Write to the cache
@@ -114,7 +114,7 @@ class channel
 
         $data = json_decode($cachedJSON);
 
-        $this->XML = $data->data;
+        $this->data = $data->data;
         $this->expires = $data->expires;
 
         return $data->data;
@@ -122,7 +122,7 @@ class channel
 
     private function putCache()
     {
-        return file_put_contents($this->cachePath, json_encode([ 'ID' => $this->ID, 'expires' => $this->getExpires(), 'data' => $this->XML]));
+        return file_put_contents($this->cachePath, json_encode([ 'ID' => $this->ID, 'expires' => $this->getExpires(), 'data' => $this->data]));
     }
 
     private function isExpired()

@@ -30,7 +30,7 @@ class subscriptions {
     {
         foreach ($this->channels as $channelObj) {
 
-            $channel = new SimpleXMLElement($channelObj->XML);
+            $channel = new SimpleXMLElement($channelObj->data);
 
             foreach ($channel->entry as $video) {
 

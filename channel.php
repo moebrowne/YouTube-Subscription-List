@@ -31,9 +31,6 @@ class channel
 
     private function getHeaders()
     {
-        if($this->headers !== null) {
-            return $this->headers;
-        }
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'https://www.youtube.com/feeds/videos.xml?channel_id='.$this->ID);
@@ -51,9 +48,6 @@ class channel
 
     private function getExpires()
     {
-        if($this->expires !== null) {
-            return $this->expires;
-        }
 
         // Get the headers
         $headers = $this->getHeaders();
@@ -84,13 +78,8 @@ class channel
     private function getXML()
     {
         // Load from cache if there is one
-        if ($this->XML === null && $this->isCached()) {
-            $this->getCache();
-        }
-
-        // Check if the XML we have is OK to use
-        if ($this->XML !== null && $this->isExpired() === false) {
-            return $this->XML;
+        if ($this->isCached() && $this->isExpired() === false) {
+            return $this->getCache();
         }
 
         $ch = curl_init();
@@ -138,7 +127,9 @@ class channel
 
     private function isExpired()
     {
-        return (bool)($this->getExpires() <= time());
+        $this->getCache();
+
+        return (bool)($this->expires <= time());
     }
 
 }

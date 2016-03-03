@@ -25,8 +25,9 @@ font-family: Ubuntu;
 }
 
 .video {
-    margin: 1.5%;
+    margin-bottom: 1.5%;
     flex: 1 1 20%;
+    background-color: rgba(0,0,0,0.1);
 }
 
 .video header {

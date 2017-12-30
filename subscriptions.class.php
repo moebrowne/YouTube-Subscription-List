@@ -46,6 +46,7 @@ class subscriptions {
                     'timestamp' => $timestamp,
                     'URL' => 'https://www.youtube.com/embed/'.$YTID,
                     'thumbnail' => 'https://i4.ytimg.com/vi/' . $YTID . '/maxresdefault.jpg',
+                    'featured' => $channelObj->isFeatured(),
                 ];
             }
         }

@@ -29,6 +29,12 @@ class channel
         $this->getXML();
     }
 
+    public function isFeatured()
+    {
+        $featuredChannelIDs = json_decode(file_get_contents(__DIR__ . '/channelsFeatured.json'));
+        return in_array($this->ID, $featuredChannelIDs);
+    }
+
     private function getHeaders()
     {
 

@@ -27,52 +27,18 @@ font-family: Ubuntu;
 }
 
 .videoGrid {
-    width: 1100px;
-    margin: 0 auto;
-}
-
-.videoGridgrid:after {
-  content: '';
-  display: block;
-  clear: both;
-}
-
-/* ---- grid-item ---- */
-
-.videoTile {
-  width: calc(50% - 10px);
-  height: 250px;
-  float: left;
-}
-
-.videoTile.videoTile--width1 {
-    width: calc(8.3% - 10px);
-    height: 200px;
-}
-
-.videoTile.videoTile--width2 {
-    width: calc(16.6% - 10px);
-    height: 250px;
-}
-
-.videoTile.videoTile--width4 {
-    width: calc(33.3% - 10px);
-    height: 400px;
-}
-
-.videoTile.videoTile--width6 {
-    width: calc(50% - 10px);
-    height: 510px;
-}
-
-.videoTile.videoTile--width8 {
-    width: calc(66.6% - 10px);
-    height: 450px;
-}
-
-.videoTile.videoTile--width12 {
     width: 100%;
-    height: 600px;
+    margin: 0 auto;
+    display: grid;
+    grid-gap: 10px;
+    grid-auto-flow: dense;
+    grid-template-columns: repeat(auto-fill, 200px);
+    grid-auto-rows: 200px;
+}
+
+.videoFeatured {
+    grid-column-end: span 2;
+    grid-row-end: span 2;
 }
 
 img {
@@ -91,10 +57,11 @@ $subscription = new subscriptions($channelIDs);
 $subscription->render();
 
 foreach ($subscription->videos as $video) {
-    $arr = [2, 2, 2, 2, 2, 6, 6];
     echo '
-    <div class="videoTile videoTile--width'.$arr[array_rand($arr)].'">
-        <a id="video_'.$video->ID.'" class="youtube" href="'.$video->URL.'"><img src="'.$video->thumbnail.'" /></a>
+    <div class="videoTile ' . (mt_rand(0, 100) > 80 ? 'videoFeatured':'') . '">
+        <a id="video_'.$video->ID.'" class="youtube" href="'.$video->URL.'">
+            <img src="'.$video->thumbnail.'" />
+        </a>
         <header>'.$video->title.'</header>
         <p>'.date('d/m/Y', $video->timestamp).'</p>
     </div>
@@ -108,12 +75,6 @@ $("a.youtube").colorbox({iframe:true, width:'100%', height:'100%'});
 
 $("a").on('click','.youtube', function(e) {
     var watched = localStorage['watched'][$(this).attr('id')] = true;
-});
-
-var $grid = $('.videoGrid').masonry({
-    // options
-    itemSelector: '.videoTile',
-    columnWidth: 91.66
 });
 </script>
 </body>

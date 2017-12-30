@@ -34,7 +34,7 @@ font-family: Ubuntu;
     grid-auto-rows: 111px;
 }
 
-.videoFeatured {
+.videoFeatured:not(.watched) {
     grid-column-end: span 2;
     grid-row-end: span 2;
 }
@@ -79,7 +79,7 @@ $subscription->render();
 
 foreach ($subscription->videos as $video) {
     echo '
-    <div class="videoTile ' . (mt_rand(0, 100) > 90 ? 'videoFeatured':'') . '">
+    <div class="videoTile ' . ($video->featured ? 'videoFeatured':'') . '">
         <a id="video_'.$video->ID.'" class="youtube" href="'.$video->URL.'">
             <img src="'.$video->thumbnail.'" />
         </a>

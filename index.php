@@ -26,13 +26,12 @@ font-family: Ubuntu;
 }
 
 .videoGrid {
-    width: 100%;
-    margin: 0 auto;
+    margin: 10px;
     display: grid;
     grid-gap: 10px;
     grid-auto-flow: dense;
-    grid-template-columns: repeat(auto-fill, 200px);
-    grid-auto-rows: 200px;
+    grid-template-columns: repeat(auto-fill, 193px);
+    grid-auto-rows: 111px;
 }
 
 .videoFeatured {
@@ -40,8 +39,27 @@ font-family: Ubuntu;
     grid-row-end: span 2;
 }
 
+.videoTile {
+    position: relative;
+}
+
+.videoTile header {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 5px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 12px;
+    color: #FFF;
+    background: rgba(0,0,0,0.75);
+}
+
 img {
     width: 100%;
+    height: 100%;
 }
 
 </style>
@@ -57,12 +75,11 @@ $subscription->render();
 
 foreach ($subscription->videos as $video) {
     echo '
-    <div class="videoTile ' . (mt_rand(0, 100) > 80 ? 'videoFeatured':'') . '">
+    <div class="videoTile ' . (mt_rand(0, 100) > 90 ? 'videoFeatured':'') . '">
         <a id="video_'.$video->ID.'" class="youtube" href="'.$video->URL.'">
             <img src="'.$video->thumbnail.'" />
         </a>
         <header>'.$video->title.'</header>
-        <p>'.date('d/m/Y', $video->timestamp).'</p>
     </div>
     ';
 }

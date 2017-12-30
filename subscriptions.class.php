@@ -45,7 +45,7 @@ class subscriptions {
                     'date' => (string)$video->published,
                     'timestamp' => $timestamp,
                     'URL' => 'https://www.youtube.com/embed/'.$YTID,
-                    'thumbnail' => 'https://i4.ytimg.com/vi/' . $YTID . '/mqdefault.jpg',
+                    'thumbnail' => 'https://i4.ytimg.com/vi/' . $YTID . '/maxresdefault.jpg',
                 ];
             }
         }

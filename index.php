@@ -8,7 +8,6 @@ ini_set('display_errors', true);
 require 'subscriptions.class.php';
 require 'channel.php';
 ?>
-
 <!doctype html>
 <html>
 <head>
@@ -73,10 +72,13 @@ foreach ($subscription->videos as $video) {
 <script>
 $("a.youtube").colorbox({iframe:true, width:'100%', height:'100%'});
 
-$("a").on('click','.youtube', function(e) {
-    var watched = localStorage['watched'][$(this).attr('id')] = true;
+$("a.youtube").on('click', function(e) {
+    var watched = JSON.parse(localStorage.getItem('watched')) || [];
+
+    watched.push($(this).attr('id'));
+
+    localStorage.setItem('watched', JSON.stringify(watched));
 });
 </script>
 </body>
 </html>
-<html>

@@ -19,9 +19,9 @@ require 'channel.php';
 <style type="text/css">
 
 body, html {
-margin: 0;
-padding: 0;
-font-family: Ubuntu;
+    margin: 0;
+    padding: 0;
+    font-family: Ubuntu;
 }
 
 .videoGrid {

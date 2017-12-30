@@ -57,6 +57,10 @@ font-family: Ubuntu;
     background: rgba(0,0,0,0.75);
 }
 
+.videoTile.watched {
+    opacity: 0.3;
+}
+
 img {
     width: 100%;
     height: 100%;
@@ -95,7 +99,20 @@ $("a.youtube").on('click', function(e) {
     watched.push($(this).attr('id'));
 
     localStorage.setItem('watched', JSON.stringify(watched));
+
+    markWatchedVideos();
 });
+
+function markWatchedVideos() {
+    var watched = JSON.parse(localStorage.getItem('watched')) || []
+
+    watched.forEach(function(ID) {
+        $('#' + ID).parent().addClass('watched')
+    })
+}
+
+markWatchedVideos();
+
 </script>
 </body>
 </html>

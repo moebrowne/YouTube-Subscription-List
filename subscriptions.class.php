@@ -52,7 +52,7 @@ class subscriptions {
 
         krsort($this->videos, SORT_NUMERIC);
 
-        $this->videos = array_slice($this->videos, 0, 30);
+        $this->videos = array_slice($this->videos, 0, 60);
 
     }
 

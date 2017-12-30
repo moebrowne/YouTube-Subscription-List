@@ -58,7 +58,7 @@ $subscription->render();
 
 foreach ($subscription->videos as $video) {
     echo '
-    <div class="videoTile ' . (mt_rand(0, 1) > 0.9 ? 'videoFeatured':'') . '">
+    <div class="videoTile ' . (mt_rand(0, 100) > 80 ? 'videoFeatured':'') . '">
         <a id="video_'.$video->ID.'" class="youtube" href="'.$video->URL.'">
             <img src="'.$video->thumbnail.'" />
         </a>

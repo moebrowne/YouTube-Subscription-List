@@ -16,7 +16,6 @@ require 'channel.php';
 <script src="node_modules/jquery/dist/jquery.min.js"></script>
 <script src="node_modules/jquery-colorbox/jquery.colorbox-min.js"></script>
 <link rel="stylesheet" href="node_modules/jquery-colorbox/example3/colorbox.css" type="text/css">
-<script src="node_modules/masonry-layout/dist/masonry.pkgd.min.js"></script>
 <style type="text/css">
 
 body, html {

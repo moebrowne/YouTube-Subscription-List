@@ -34,7 +34,7 @@ font-family: Ubuntu;
     grid-auto-rows: 111px;
 }
 
-.videoFeatured {
+.videoFeatured:not(.watched) {
     grid-column-end: span 2;
     grid-row-end: span 2;
 }

@@ -79,7 +79,7 @@ $subscription->render();
 foreach ($subscription->videos as $video) {
     echo '
     <div class="videoTile ' . ($video->featured ? 'videoFeatured':'') . '">
-        <a id="video_'.$video->ID.'" class="youtube" href="'.$video->URL.'">
+        <a id="video_'.$video->ID.'" class="youtube" href="'.$video->URL.'?autoplay=1">
             <img src="'.$video->thumbnail.'" />
         </a>
         <header>'.$video->title.'</header>

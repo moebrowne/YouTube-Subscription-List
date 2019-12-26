@@ -15,6 +15,7 @@ require 'channel.php';
 <title>Subscriptions</title>
 <script src="node_modules/jquery/dist/jquery.min.js"></script>
 <script src="node_modules/jquery-colorbox/jquery.colorbox-min.js"></script>
+<script src="node_modules/loading-attribute-polyfill/loading-attribute-polyfill.min.js"></script>
 <link rel="stylesheet" href="node_modules/jquery-colorbox/example3/colorbox.css" type="text/css">
 <style type="text/css">
 
@@ -62,6 +63,7 @@ body, html {
 
 img {
     width: 100%;
+    height: auto;
 }
 
 </style>
@@ -79,7 +81,9 @@ foreach ($subscription->videos as $video) {
     echo '
     <div class="videoTile ' . ($video->featured ? 'videoFeatured':'') . '" title="'.$video->title.'">
         <a id="video_'.$video->ID.'" class="youtube" href="'.$video->URL.'?autoplay=1">
-            <img src="'.$video->thumbnail.'" />
+            <noscript class="loading-lazy">
+                <img src="'.$video->thumbnail.'" loading="lazy" width="1280" height="720" />
+            </noscript>
         </a>
         <header>'.$video->title.'</header>
     </div>

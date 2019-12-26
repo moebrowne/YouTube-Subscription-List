@@ -25,21 +25,21 @@ body, html {
 }
 
 .videoGrid {
-    margin: 10px;
     display: grid;
     grid-gap: 10px;
     grid-auto-flow: dense;
-    grid-template-columns: repeat(auto-fill, 193px);
-    grid-auto-rows: 111px;
+    grid-template-columns: repeat(auto-fill, calc(20% - 8px));
 }
 
 .videoFeatured:not(.watched) {
     grid-column-end: span 2;
     grid-row-end: span 2;
+    max-height: 71.5vh;
 }
 
 .videoTile {
     position: relative;
+    max-height: 35.2vh;
 }
 
 .videoTile header {
@@ -62,7 +62,6 @@ body, html {
 
 img {
     width: 100%;
-    height: 100%;
 }
 
 </style>

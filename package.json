@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "description": "A tool to aggregate videos from a number of channels and track which you have watched and which are new",
   "dependencies": {
-    "jquery-colorbox": "^1.6.3"
+    "jquery-colorbox": "^1.6.3",
+    "loading-attribute-polyfill": "^1.3.1"
   },
   "devDependencies": {}
 }

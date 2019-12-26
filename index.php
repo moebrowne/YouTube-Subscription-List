@@ -29,18 +29,20 @@ body, html {
     display: grid;
     grid-gap: 10px;
     grid-auto-flow: dense;
-    grid-template-columns: repeat(auto-fill, calc(20% - 8px));
+    grid-template-columns: repeat(auto-fill, calc(20vw - 11px));
 }
 
 .videoFeatured:not(.watched) {
     grid-column-end: span 2;
     grid-row-end: span 2;
-    max-height: 71.5vh;
+    height: calc((40vw - (10px/2)) * (720 / 1280));
+    max-height: 100%;
 }
 
 .videoTile {
     position: relative;
-    max-height: 35.2vh;
+    height: calc((20vw - 10px) * (720 / 1280));
+    max-height: 100%;
 }
 
 .videoTile header {
@@ -62,8 +64,9 @@ body, html {
 }
 
 img {
+    display: block;
     width: 100%;
-    height: auto;
+    height: 100%;
 }
 
 </style>

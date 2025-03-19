@@ -1,6 +1,2 @@
 .idea
-node_modules
-cache
-
 channels.json
-channelsFeatured.json

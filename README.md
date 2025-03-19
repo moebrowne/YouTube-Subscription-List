@@ -1,9 +1,36 @@
 # YouTube Sub List
 
-A tool to aggregate videos from a number of channels and track which you have watched and which are new
+A simple web app which aggregates videos from YouTube channels via RSS, no account needed.
 
-# Subscribed Channels
+![Screenshot](screenshot.png)
 
-The list of channels you wish to subscribe to is kept in the a file named `channels.json` which should be placed in the root of the project.
 
-There is an example `channels.json.sample` to show the expected format, it's just an array of channel IDs
+
+## Run
+
+The easiest is via PHPs built-in webserver. PHP 8.4 is required
+
+```
+PHP_CLI_SERVER_WORKERS=$(nproc) php -S localhost:8008 -t public
+```
+
+There is also a Docker container:
+
+```
+docker build -t youtube-subscriptions .
+docker run --name youtube-subscriptions -e PHP_CLI_SERVER_WORKERS=$(nproc) -d -p 80:8008 youtube-subscriptions
+```
+
+
+# Channel Subscriptions 
+
+The list of subscribed channels is defined in a `channels.json` file in the root directory. It should look like this:
+
+```json
+{
+    "<CHANNEL_ID1>": {},
+    "<CHANNEL_ID2>": {
+        "featured": true
+    }
+}
+```

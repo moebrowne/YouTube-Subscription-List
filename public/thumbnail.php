@@ -10,18 +10,18 @@ if (empty($videoId)) {
 }
 
 $thumbnailTypes = [
-    'maxresdefault.jpg', // 1280x720
-//    'sddefault.jpg',     // 640x480
-//    'hqdefault.jpg',     // 480x360
-    'mqdefault.jpg',     // 320x180
-//    'default.jpg'        // 120x90
+//    'maxresdefault.webp', // 1280x720
+    'sddefault.webp',     // 640x480
+//    'hqdefault.webp',     // 480x360
+    'mqdefault.webp',     // 320x180
+//    'default.webp'        // 120x90
 ];
 
-$baseUrl = "https://i4.ytimg.com/vi/{$videoId}/";
+$baseUrl = 'https://i.ytimg.com/vi_webp/' . $videoId;
 $foundThumbnail = false;
 
 foreach ($thumbnailTypes as $type) {
-    $thumbnailUrl = $baseUrl . $type;
+    $thumbnailUrl = $baseUrl . '/' . $type;
 
     $ch = curl_init($thumbnailUrl);
     curl_setopt_array($ch, [

@@ -18,7 +18,13 @@ There is also a Docker container:
 
 ```
 docker build -t youtube-subscriptions .
-docker run --name youtube-subscriptions -e PHP_CLI_SERVER_WORKERS=$(nproc) -d -p 80:8008 youtube-subscriptions
+docker run \
+    --name youtube-subscriptions \
+    -e PHP_CLI_SERVER_WORKERS=$(nproc) \
+    -d \
+    -p 80:8008 \
+    -v $PWD/channels.json:channels.json
+    youtube-subscriptions
 ```
 
 

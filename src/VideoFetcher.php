@@ -4,18 +4,11 @@ declare(strict_types=1);
 
 class VideoFetcher
 {
-    private array $curlHandles = [];
-
-    public function __construct(
-        private readonly array $channels,
-    ) {
-    }
-
-    public function run(): array
+    public static function run(ChannelCollection $channels): array
     {
         $channelUrls = array_map(
             fn (Channel $channel): string => 'https://www.youtube.com/feeds/videos.xml?channel_id=UC' . $channel->id,
-            $this->channels,
+            $channels->toArray(),
         );
 
         $multiHandle = curl_multi_init();
@@ -25,6 +18,8 @@ class VideoFetcher
         curl_share_setopt($shareHandle, CURLSHOPT_SHARE, CURL_LOCK_DATA_DNS);
         curl_share_setopt($shareHandle, CURLSHOPT_SHARE, CURL_LOCK_DATA_SSL_SESSION);
         curl_share_setopt($shareHandle, CURLSHOPT_SHARE, CURL_LOCK_DATA_CONNECT);
+
+        $curlHandles = [];
 
         foreach ($channelUrls as $channelUrl) {
             $curlHandle = curl_init();
@@ -42,7 +37,7 @@ class VideoFetcher
 
             curl_multi_add_handle($multiHandle, $curlHandle);
 
-            $this->curlHandles[] = $curlHandle;
+            $curlHandles[] = $curlHandle;
         }
 
         do {
@@ -55,12 +50,12 @@ class VideoFetcher
 
         $videos = [];
 
-        foreach ($this->curlHandles as $handle) {
+        foreach ($curlHandles as $handle) {
             $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
             $content = curl_multi_getcontent($handle);
 
             if ($httpCode === 200) {
-                $videos = [...$videos, ...$this->parseYouTubeXml($content)];
+                $videos = [...$videos, ...self::parseYouTubeXml($content)];
             }
 
             curl_multi_remove_handle($multiHandle, $handle);
@@ -70,13 +65,11 @@ class VideoFetcher
         curl_multi_close($multiHandle);
         curl_share_close($shareHandle);
 
-        usort($videos, static fn(Video $a, Video $b): int => $b->publishedAt <=> $a->publishedAt);
-
         return $videos;
     }
 
     /** @return Video[] */
-    private function parseYouTubeXml(string $xmlContent): array
+    private static function parseYouTubeXml(string $xmlContent): array
     {
         $xml = new SimpleXMLElement($xmlContent);
         $namespaces = $xml->getNamespaces(true);

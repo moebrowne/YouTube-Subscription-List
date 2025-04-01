@@ -3,28 +3,17 @@
 declare(strict_types=1);
 
 require __DIR__ . '/../src/Channel.php';
+require __DIR__ . '/../src/ChannelCollection.php';
 require __DIR__ . '/../src/Video.php';
+require __DIR__ . '/../src/VideoCollection.php';
 require __DIR__ . '/../src/VideoFetcher.php';
 
-$channelsPath = __DIR__ . '/../channels.json';
+$channels = new ChannelCollection(__DIR__ . '/../channels.json');
+$videos = new VideoCollection(__DIR__ . '/../videos.json');
+$videos->add(...VideoFetcher::run($channels));
 
-if (file_exists($channelsPath) === false) {
-    file_put_contents($channelsPath, '{}');
-}
-
-$channels = json_decode(file_get_contents($channelsPath), associative: true, flags: JSON_THROW_ON_ERROR);
-
-foreach ($channels as $id => $channel) {
-    $channels[$id] = new Channel(
-        id: $id,
-        featured: $channel['featured'] ?? false,
-    );
-}
-
-$videos = new VideoFetcher($channels)
-    ->run();
-
-$videos = array_splice($videos, 0, 150);
+$videos = $videos->toArray();
+$videos = array_splice($videos, 0, 300);
 
 function e(?string $value): string {
     return htmlentities($value ?? '');

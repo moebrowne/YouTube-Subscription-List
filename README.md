@@ -22,8 +22,9 @@ docker run \
     --name youtube-subscriptions \
     -e PHP_CLI_SERVER_WORKERS=$(nproc) \
     -d \
-    -p 80:8008 \
-    -v $PWD/channels.json:channels.json
+    -p 8008:80 \
+    -v $PWD/channels.json:/var/www/html/channels.json \
+    -v $PWD/videos.json:/var/www/html/videos.json \
     youtube-subscriptions
 ```
 
@@ -40,3 +41,10 @@ The list of subscribed channels is defined in a `channels.json` file in the root
     }
 }
 ```
+
+# Limitations
+
+The YouTube RSS feeds only include the 15 latest videos. The app will persist all videos that are fetched into
+`videos.json` but this means that some might get missed if a channel releases more than 15 videos between refreshes.
+
+In the future I might create a background task which fetches the videos every hour so nothing gets missed.

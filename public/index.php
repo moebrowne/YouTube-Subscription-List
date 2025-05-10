@@ -130,7 +130,7 @@ function e(?string $value): string {
         <yt-video
             video-id="<?= e($video->id) ?>"
             title="<?= e($video->title) ?>"
-            <?= $channels[$video->channelId]->featured ? 'featured' : '' ?>
+            <?= $channels[$video->channelId]?->featured ? 'featured' : '' ?>
             embed-url="<?= e($video->embedUrl) ?>"
         >
             <img src="/thumbnail.php?id=<?= e($video->id) ?>" loading="lazy" width="1280" height="720" />

@@ -6,11 +6,6 @@ class VideoFetcher
 {
     public static function run(ChannelCollection $channels): array
     {
-        $channelUrls = array_map(
-            fn (Channel $channel): string => 'https://www.youtube.com/feeds/videos.xml?channel_id=UC' . $channel->id,
-            $channels->toArray(),
-        );
-
         $multiHandle = curl_multi_init();
         curl_multi_setopt($multiHandle, CURLMOPT_MAX_HOST_CONNECTIONS, 1);
 
@@ -19,13 +14,13 @@ class VideoFetcher
         curl_share_setopt($shareHandle, CURLSHOPT_SHARE, CURL_LOCK_DATA_SSL_SESSION);
         curl_share_setopt($shareHandle, CURLSHOPT_SHARE, CURL_LOCK_DATA_CONNECT);
 
-        $curlHandles = [];
+        $curlHandles = new WeakMap();
 
-        foreach ($channelUrls as $channelUrl) {
+        foreach ($channels as $channel) {
             $curlHandle = curl_init();
 
             curl_setopt_array($curlHandle, [
-                CURLOPT_URL => $channelUrl,
+                CURLOPT_URL => $channel->feedUrl,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_SHARE => $shareHandle,
                 CURLOPT_USERAGENT => 'RSS Feed Reader/1.0',
@@ -37,7 +32,7 @@ class VideoFetcher
 
             curl_multi_add_handle($multiHandle, $curlHandle);
 
-            $curlHandles[] = $curlHandle;
+            $curlHandles[$channel] = $curlHandle;
         }
 
         do {
@@ -50,12 +45,12 @@ class VideoFetcher
 
         $videos = [];
 
-        foreach ($curlHandles as $handle) {
+        foreach ($curlHandles as $channel => $handle) {
             $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
             $content = curl_multi_getcontent($handle);
 
             if ($httpCode === 200) {
-                $videos = [...$videos, ...self::parseYouTubeXml($content)];
+                $videos = [...$videos, ...self::parseYouTubeXml($content, $channel->featured)];
             }
 
             curl_multi_remove_handle($multiHandle, $handle);
@@ -69,7 +64,7 @@ class VideoFetcher
     }
 
     /** @return Video[] */
-    private static function parseYouTubeXml(string $xmlContent): array
+    private static function parseYouTubeXml(string $xmlContent, bool $videosAreFeatured): array
     {
         $xml = new SimpleXMLElement($xmlContent);
         $namespaces = $xml->getNamespaces(true);
@@ -83,10 +78,10 @@ class VideoFetcher
 
             $videos[$videoId] = new Video(
                 $videoId,
-                (string)$xml->children($namespaces['yt'])->channelId,
                 (string)$entry->title,
                 new DateTimeImmutable((string)$entry->published),
-                (string)$mediaGroup->children($namespaces['media'])->description
+                (string)$mediaGroup->children($namespaces['media'])->description,
+                $videosAreFeatured,
             );
         }
 

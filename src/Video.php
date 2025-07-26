@@ -10,10 +10,10 @@ class Video implements JsonSerializable
 
     public function __construct(
         public readonly string $id,
-        public readonly string $channelId,
         public readonly string $title,
         public readonly DateTimeImmutable $publishedAt,
-        public readonly string $description
+        public readonly string $description,
+        public readonly bool $featured = false,
     ) {
     }
 
@@ -21,10 +21,10 @@ class Video implements JsonSerializable
     {
         return new self(
             $data['id'],
-            $data['channelId'],
             $data['title'],
             new DateTimeImmutable($data['publishedAt']),
-            $data['description']
+            $data['description'],
+            $data['featured'] ?? false,
         );
     }
 

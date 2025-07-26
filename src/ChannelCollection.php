@@ -18,21 +18,32 @@ class ChannelCollection implements \Countable, \IteratorAggregate, \ArrayAccess
     private function loadChannels(): void
     {
         if (file_exists($this->channelsPath) === false) {
-            file_put_contents($this->channelsPath, '{}');
+            return;
         }
 
-        $channelsData = json_decode(
-            file_get_contents($this->channelsPath),
-            associative: true,
-            flags: JSON_THROW_ON_ERROR
-        );
+        $channelUrls = file($this->channelsPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
-        foreach ($channelsData as $id => $channel) {
-            $this->channels[$id] = new Channel(
-                id: $id,
-                featured: $channel['featured'] ?? false,
+        foreach ($channelUrls as $channelUrl) {
+            if (str_starts_with($channelUrl, '#')) {
+                continue;
+            }
+
+            $this->channels[] = new Channel(
+                url: str_replace('*', '', $channelUrl),
+                featured: str_starts_with($channelUrl, '*'),
             );
         }
+
+        $this->channels = pipe(
+            $channelUrls,
+            filterOutComments: fn (string $feedUrl): bool => str_starts_with($feedUrl, '#') === false,
+            mapToDto: function (string $feedUrl): Channel {
+                return new Channel(
+                    url: str_replace('*', '', $feedUrl),
+                    featured: str_starts_with($feedUrl, '*'),
+                );
+            }
+        );
     }
 
     public function save(): void

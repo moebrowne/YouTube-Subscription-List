@@ -23,7 +23,7 @@ docker run \
     -e PHP_CLI_SERVER_WORKERS=$(nproc) \
     -d \
     -p 8008:80 \
-    -v $PWD/channels.json:/var/www/html/channels.json \
+    -v $PWD/channels.txt:/var/www/html/channels.txt \
     -v $PWD/videos.json:/var/www/html/videos.json \
     youtube-subscriptions
 ```
@@ -31,16 +31,22 @@ docker run \
 
 # Channel Subscriptions 
 
-The list of subscribed channels is defined in a `channels.json` file in the root directory. It should look like this:
+The list of subscribed channels is defined in a `channels.txt` file in the root directory. It should look like this:
 
-```json
-{
-    "<CHANNEL_ID1>": {},
-    "<CHANNEL_ID2>": {
-        "featured": true
-    }
-}
+```text
+https://www.youtube.com/@username0
+https://www.youtube.com/@username1
+https://www.youtube.com/@username2
 ```
+
+To mark a channel as 'featured' prepend a * to the start of the line:
+
+```text
+https://www.youtube.com/@username0
+*https://www.youtube.com/@favourite
+https://www.youtube.com/@username2
+```
+
 
 # Limitations
 

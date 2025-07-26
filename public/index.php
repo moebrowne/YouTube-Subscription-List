@@ -2,13 +2,11 @@
 
 declare(strict_types=1);
 
-require __DIR__ . '/../src/Channel.php';
-require __DIR__ . '/../src/ChannelCollection.php';
-require __DIR__ . '/../src/Video.php';
-require __DIR__ . '/../src/VideoCollection.php';
-require __DIR__ . '/../src/VideoFetcher.php';
+foreach (glob(__DIR__ . '/../src/*.php') as $path) {
+    require $path;
+}
 
-$channels = new ChannelCollection(__DIR__ . '/../channels.json');
+$channels = new ChannelCollection(__DIR__ . '/../channels.txt');
 $videos = new VideoCollection(__DIR__ . '/../videos.json');
 $videos->add(...VideoFetcher::run($channels));
 
@@ -130,7 +128,7 @@ function e(?string $value): string {
         <yt-video
             video-id="<?= e($video->id) ?>"
             title="<?= e($video->title) ?>"
-            <?= $channels[$video->channelId]?->featured ? 'featured' : '' ?>
+            <?= $video->featured ? 'featured' : '' ?>
             embed-url="<?= e($video->embedUrl) ?>"
         >
             <img src="/thumbnail.php?id=<?= e($video->id) ?>" loading="lazy" width="1280" height="720" />

@@ -86,7 +86,10 @@ function e(?string $value): string {
             height: 100vh;
             max-width: 100vw;
             max-height: 100vh;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(21, 21, 21, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         dialog::backdrop {
@@ -94,8 +97,9 @@ function e(?string $value): string {
         }
 
         dialog iframe {
-            width: 100%;
-            height: 100%;
+            width: calc(100vh * (16 / 9));
+            height: 100vh;
+            max-width: 100vw;
             border: none;
         }
 

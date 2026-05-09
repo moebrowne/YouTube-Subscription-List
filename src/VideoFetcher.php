@@ -19,8 +19,15 @@ class VideoFetcher
         foreach ($channels as $channel) {
             $curlHandle = curl_init();
 
+            try {
+                $feedUrl = $channel->feedUrl;
+            } catch (\Throwable $e) {
+                user_error($e->getMessage());
+                continue;
+            }
+
             curl_setopt_array($curlHandle, [
-                CURLOPT_URL => $channel->feedUrl,
+                CURLOPT_URL => $feedUrl,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_SHARE => $shareHandle,
                 CURLOPT_USERAGENT => 'RSS Feed Reader/1.0',

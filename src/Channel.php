@@ -19,7 +19,7 @@ declare(strict_types=1);
                 return file_get_contents($cacheFile);
             }
 
-            $channelUrl = get_meta_tags($this->url)['twitter:url'];
+            $channelUrl = get_meta_tags($this->url)['twitter:url'] ?? throw new \InvalidArgumentException('Invalid channel URL: ' . $this->url);
             $channelId = str_replace('https://www.youtube.com/channel/', '', $channelUrl);
             $feedUrl = 'https://www.youtube.com/feeds/videos.xml?playlist_id=' . preg_replace('/^UC/', 'UULF', $channelId);
 

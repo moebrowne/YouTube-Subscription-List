@@ -20,7 +20,8 @@ declare(strict_types=1);
             }
 
             $channelUrl = get_meta_tags($this->url)['twitter:url'];
-            $feedUrl = str_replace('https://www.youtube.com/channel/', 'https://www.youtube.com/feeds/videos.xml?channel_id=', $channelUrl);
+            $channelId = str_replace('https://www.youtube.com/channel/', '', $channelUrl);
+            $feedUrl = 'https://www.youtube.com/feeds/videos.xml?playlist_id=' . preg_replace('/^UC/', 'UULF', $channelId);
 
             file_put_contents($cacheFile, $feedUrl);
 

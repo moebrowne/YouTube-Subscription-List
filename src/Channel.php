@@ -12,8 +12,14 @@ declare(strict_types=1);
 
     public string $feedUrl {
         get {
+            $cacheDir = __DIR__ . '/../.cache';
+
+            if (is_dir($cacheDir) === false) {
+                mkdir($cacheDir, recursive: true);
+            }
+
             $cacheKey = hash('sha256', $this->url);
-            $cacheFile = sys_get_temp_dir() . '/' . $cacheKey;
+            $cacheFile = $cacheDir . '/' . $cacheKey;
 
             if (file_exists($cacheFile)) {
                 return file_get_contents($cacheFile);

@@ -141,7 +141,7 @@ function e(?string $value): string {
     </style>
 </head>
 <body>
-<div id="last-updated"><?= number_format($totalVideos) ?> videos from <?= number_format($totalChannels) ?> channels, <?= number_format($watchedCount) ?> watched &mdash; Updated <?= date('D j M, H:i') ?></div>
+<div id="last-updated"><?= number_format($totalVideos) ?> videos from <?= number_format($totalChannels) ?> channels, <?= number_format($watchedCount) ?> watched &bullet; Last updated <span id="last-updated-time"></span></div>
 <yt-videos>
     <?php foreach ($videos as $video) : ?>
         <yt-video
@@ -215,6 +215,12 @@ function e(?string $value): string {
         });
 
         const loadedAt = Date.now();
+
+        document.getElementById('last-updated-time').textContent = new Intl.DateTimeFormat(
+            undefined,
+            {day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'}
+            )
+            .format(new Date(loadedAt));
 
         setInterval(
             () => {

@@ -11,6 +11,11 @@ $videos = new VideoCollection(__DIR__ . '/../videos.json');
 $videos->add(...VideoFetcher::run($channels));
 
 $videos = $videos->toArray();
+
+$totalVideos   = count($videos);
+$totalChannels = count($channels);
+$watchedCount  = count(array_filter($videos, fn(Video $v): bool => $v->watched));
+
 $videos = array_splice($videos, 0, 300);
 
 function e(?string $value): string {
@@ -132,13 +137,11 @@ function e(?string $value): string {
             padding: 6px 10px;
             font-size: 11px;
             color: rgba(0, 0, 0, 0.45);
-            background: rgba(248, 248, 248, 0.9);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
         }
     </style>
 </head>
 <body>
-<div id="last-updated">Updated <?= date('D j M, H:i') ?></div>
+<div id="last-updated"><?= number_format($totalVideos) ?> videos from <?= number_format($totalChannels) ?> channels, <?= number_format($watchedCount) ?> watched &mdash; Updated <?= date('D j M, H:i') ?></div>
 <yt-videos>
     <?php foreach ($videos as $video) : ?>
         <yt-video

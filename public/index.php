@@ -124,9 +124,21 @@ function e(?string $value): string {
         .close-button:hover {
             background: rgba(255, 0, 0, 0.7);
         }
+
+        #last-updated {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            padding: 6px 10px;
+            font-size: 11px;
+            color: rgba(0, 0, 0, 0.45);
+            background: rgba(248, 248, 248, 0.9);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        }
     </style>
 </head>
 <body>
+<div id="last-updated">Updated <?= date('D j M, H:i') ?></div>
 <yt-videos>
     <?php foreach ($videos as $video) : ?>
         <yt-video
@@ -198,6 +210,23 @@ function e(?string $value): string {
         dialog.addEventListener('close', () => {
             videoIframe.src = 'about:blank';
         });
+
+        const loadedAt = Date.now();
+
+        setInterval(
+            () => {
+                const refreshIsDue = Date.now() - loadedAt > 60 * 60 * 1000;
+                const playerIsOpen = dialog.open === false;
+                const tabIsActive = document.visibilityState === 'visible';
+
+                if (refreshIsDue === false || playerIsOpen || tabIsActive) {
+                    return;
+                }
+
+                location.reload();
+            },
+            60 * 1000
+        );
     });
 </script>
 </body>

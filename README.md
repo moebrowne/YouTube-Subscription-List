@@ -53,4 +53,5 @@ https://www.youtube.com/@username2
 The YouTube RSS feeds only include the 15 latest videos. The app will persist all videos that are fetched into
 `videos.json` but this means that some might get missed if a channel releases more than 15 videos between refreshes.
 
-In the future I might create a background task which fetches the videos every hour so nothing gets missed.
+To help with this the page will auto-refresh once per hour so long as the tab is open and a video isn't currently
+playing.

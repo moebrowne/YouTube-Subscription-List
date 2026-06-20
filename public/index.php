@@ -133,6 +133,7 @@ function e(?string $value): string {
             video-id="<?= e($video->id) ?>"
             title="<?= e($video->title) ?>"
             <?= $video->featured ? 'featured' : '' ?>
+            <?= $video->watched ? 'watched' : '' ?>
             embed-url="<?= e($video->embedUrl) ?>"
         >
             <img src="/thumbnail.php?id=<?= e($video->id) ?>" loading="lazy" width="1280" height="720" />
@@ -156,41 +157,13 @@ function e(?string $value): string {
         const dialog = document.getElementById('video-dialog');
         const videoIframe = document.getElementById('video-iframe');
 
-        const getWatchedVideos = () => {
-            try {
-                return JSON.parse(localStorage.getItem('watched')) || [];
-            } catch (e) {
-                return [];
-            }
-        };
-
-        const applyWatchedStatuses = () => {
-            const watchedVideos = getWatchedVideos();
-
-            watchedVideos.forEach((videoId) => {
-                document
-                    .querySelector(`yt-video[video-id="${videoId}"]`)
-                    ?.setAttribute('watched', '');
-            })
-        };
-
         const markVideoAsWatched = (videoId) => {
-            const watchedVideos = getWatchedVideos();
-
-            if (watchedVideos.includes(videoId)) {
-                return;
-            }
-
-            watchedVideos.push(videoId);
-
-            localStorage.setItem('watched', JSON.stringify(watchedVideos));
-
             document
                 .querySelector(`yt-video[video-id="${videoId}"]`)
                 ?.setAttribute('watched', '');
-        };
 
-        applyWatchedStatuses();
+            fetch('/watched.php', {method: 'POST', body: videoId});
+        };
 
         document.querySelector('yt-videos')
             .addEventListener('click', function(event) {

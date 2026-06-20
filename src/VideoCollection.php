@@ -51,6 +51,7 @@ class VideoCollection implements \Countable, \IteratorAggregate, \ArrayAccess
     public function add(Video ...$videos): void
     {
         foreach ($videos as $video) {
+            $video->watched = $this->videos[$video->id]->watched ?? false;
             $this->videos[$video->id] = $video;
         }
 

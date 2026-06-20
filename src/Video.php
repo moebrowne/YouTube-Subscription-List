@@ -14,6 +14,7 @@ class Video implements JsonSerializable
         public readonly DateTimeImmutable $publishedAt,
         public readonly string $description,
         public readonly bool $featured = false,
+        public bool $watched = false,
     ) {
     }
 
@@ -25,6 +26,7 @@ class Video implements JsonSerializable
             new DateTimeImmutable($data['publishedAt']),
             $data['description'],
             $data['featured'] ?? false,
+            $data['watched'] ?? false,
         );
     }
 

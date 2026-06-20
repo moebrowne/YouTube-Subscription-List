@@ -61,11 +61,9 @@ class VideoFetcher
             }
 
             curl_multi_remove_handle($multiHandle, $handle);
-            curl_close($handle);
         }
 
         curl_multi_close($multiHandle);
-        curl_share_close($shareHandle);
 
         return $videos;
     }

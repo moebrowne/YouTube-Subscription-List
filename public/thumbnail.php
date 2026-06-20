@@ -35,7 +35,6 @@ foreach ($thumbnailTypes as $type) {
 
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $contentLength = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
-    curl_close($ch);
 
     if ($httpCode == 200 && $contentLength > 4000) {
         $foundThumbnail = true;
@@ -48,7 +47,6 @@ foreach ($thumbnailTypes as $type) {
 
         $imageData = curl_exec($ch);
         $contentType = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
-        curl_close($ch);
 
         header("Content-Type: {$contentType}");
         header("Content-Length: " . strlen($imageData));

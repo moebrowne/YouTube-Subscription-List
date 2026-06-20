@@ -8,7 +8,7 @@ A simple web app which aggregates videos from YouTube channels via RSS, no accou
 
 ## Run
 
-The easiest way to get started is to run PHPs built-in webserver. PHP 8.4 is required.
+The easiest way to get started is to run PHPs built-in webserver. PHP 8.4 or later is required.
 
 ```
 PHP_CLI_SERVER_WORKERS=$(nproc) php -S localhost:8008 -t public

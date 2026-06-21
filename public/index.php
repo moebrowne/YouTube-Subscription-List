@@ -222,7 +222,7 @@ function e(?string $value): string {
             () => {
                 const refreshIsDue = Date.now() - loadedAt > 60 * 60 * 1000;
                 const playerIsOpen = dialog.open === false;
-                const tabIsActive = document.visibilityState === 'visible';
+                const tabIsActive = document.hasFocus();
 
                 if (refreshIsDue === false || playerIsOpen || tabIsActive) {
                     return;

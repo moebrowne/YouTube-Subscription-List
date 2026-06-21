@@ -92,9 +92,6 @@ function e(?string $value): string {
             max-width: 100vw;
             max-height: 100vh;
             background: rgba(21, 21, 21, 0.9);
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         dialog::backdrop {
@@ -106,6 +103,8 @@ function e(?string $value): string {
             height: 100vh;
             max-width: 100vw;
             border: none;
+            display: block;
+            margin: 0 auto;
         }
 
         .close-button {

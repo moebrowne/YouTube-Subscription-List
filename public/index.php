@@ -129,10 +129,7 @@ function e(?string $value): string {
             background: rgba(255, 0, 0, 0.7);
         }
 
-        #last-updated {
-            position: sticky;
-            top: 0;
-            z-index: 1;
+        #stats-bar {
             padding: 6px 10px;
             font-size: 11px;
             color: rgba(0, 0, 0, 0.45);
@@ -140,7 +137,7 @@ function e(?string $value): string {
     </style>
 </head>
 <body>
-<div id="last-updated"><?= number_format($totalVideos) ?> videos from <?= number_format($totalChannels) ?> channels, <?= number_format($watchedCount) ?> watched &bullet; Last updated <span id="last-updated-time"></span></div>
+<div id="stats-bar"><?= number_format($totalVideos) ?> videos from <?= number_format($totalChannels) ?> channels, <?= number_format($watchedCount) ?> watched &bullet; Last updated <span id="last-updated-time"></span></div>
 <yt-videos>
     <?php foreach ($videos as $video) : ?>
         <yt-video
